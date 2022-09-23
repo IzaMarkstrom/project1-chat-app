@@ -1,23 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Post from "@project1-chat-app/shared";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3002";
+
+const fetchPosts = async () => {
+  const response = await axios.get<Post>("/posts");
+  return response.data;
+};
 
 function App() {
+  const [post, setPost] = useState<Post | undefined>();
+  const [error, setError] = useState<string | undefined>();
+
+  useEffect(() => {
+    fetchPosts()
+      .then(setPost)
+      .catch((error) => {
+        setPost(undefined);
+        setError("Something went wrong");
+      });
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {post ? post.text : error ? error : "No posts yet"}
       </header>
     </div>
   );
