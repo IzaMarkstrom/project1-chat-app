@@ -1,0 +1,12 @@
+{
+  "name": "@project1-chat-app/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/post-item.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -14,9 +14,8 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/client",
-    "packages/server"
-    ],
+    "./packages/*"
+  ],
   "bugs": {
     "url": "https://github.com/IzaMarkstrom/project1-chat-app/issues"
   },
