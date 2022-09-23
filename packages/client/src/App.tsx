@@ -12,15 +12,21 @@ const fetchPosts = async () => {
 
 function App() {
   const [post, setPost] = useState<Post | undefined>();
+  const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
-    fetchPosts().then(setPost);
+    fetchPosts()
+      .then(setPost)
+      .catch((error) => {
+        setPost(undefined);
+        setError("Something went wrong");
+      });
   }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        {post ? post.text : "No posts yet"}
+        {post ? post.text : error ? error : "No posts yet"}
       </header>
     </div>
   );
