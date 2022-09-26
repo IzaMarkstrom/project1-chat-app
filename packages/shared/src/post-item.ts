@@ -4,3 +4,4 @@ export default interface Post {
   text: string;
   timeStamp: Date;
 }
+
