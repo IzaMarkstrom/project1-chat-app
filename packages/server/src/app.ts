@@ -1,6 +1,8 @@
 import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
 import Post from "@project1-chat-app/shared";
+import { setupMongoDb } from "./db";
+const dotenv = require("dotenv").config();
 
 const app: Application = express();
 
@@ -18,6 +20,7 @@ app.get("/posts", (req: Request, res: Response<Post>) => {
   });
 });
 
-app.listen(port, function () {
+app.listen(port, async function () {
+  await setupMongoDb("mongodb://localhost/chatt-app");
   console.log(`App is listening on port ${port} !`);
 });

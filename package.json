@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/IzaMarkstrom/project1-chat-app/issues"
   },
-  "homepage": "https://github.com/IzaMarkstrom/project1-chat-app#readme"
+  "homepage": "https://github.com/IzaMarkstrom/project1-chat-app#readme",
+  "dependencies": {
+    "mongoose": "^6.6.2"
+  }
 }
