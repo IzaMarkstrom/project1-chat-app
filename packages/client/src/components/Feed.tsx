@@ -6,7 +6,7 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
     return <div>{error}</div>;
   } else if (post) {
     return (
-      <Box width="50%">
+      <Box width="50%" mb="10" mt="10">
         {post.map((item) => {
           return (
             <Flex mt="5" p="1">
@@ -27,6 +27,7 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
                 color="gray.500"
               >
                 <p>{item.text}</p>
+                <p>{item.timeStamp.toString()}</p>
               </Box>
             </Flex>
           );
