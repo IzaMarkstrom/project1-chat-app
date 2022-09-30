@@ -1,6 +1,9 @@
 import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
 import Post from "@project1-chat-app/shared";
+import User from "@project1-chat-app/shared";
+const { UserModel } = require("./db")
+import saveUser from "./user-service"
 import { setupMongoDb } from "./db";
 const dotenv = require("dotenv").config();
 
@@ -19,6 +22,22 @@ app.get("/posts", (req: Request, res: Response<Post>) => {
     timeStamp: new Date(),
   });
 });
+
+app.post("/register", async (req: Request<User>, res: Response<void>) => {
+  const {username, password, email} = req.body
+
+  const userExists = await UserModel.findOne({ username });
+    
+  if(userExists){
+      res.status(403).json()
+  } else {
+    try {
+      res.send(await saveUser(req.body))
+    } catch (e) {
+      res.sendStatus(400)
+    }
+  }
+})
 
 app.listen(port, async function () {
   await setupMongoDb("mongodb://localhost/chatt-app");
