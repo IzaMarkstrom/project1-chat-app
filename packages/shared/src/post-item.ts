@@ -1,5 +1,5 @@
 export default interface Post {
-  id: string;
+  id: number;
   author: string;
   text: string;
   timeStamp: Date;
