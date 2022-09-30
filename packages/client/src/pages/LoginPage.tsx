@@ -1,41 +1,36 @@
 import React, { useEffect, useState } from "react";
 import User from "@project1-chat-app/shared";
-import axios from "axios";
 import { useFormik } from "formik";
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   FormControl,
   FormLabel,
   Input,
-  VStack
+  VStack,
+  Text,
+  Link
 } from "@chakra-ui/react";
 
 
 export default function LoginPage() {
-  const [username, setUsername] = useState<User | undefined>()
-  const [password, setPassword] = useState<User | undefined>()
+  const [username, setUsername] = useState<User | String>("")
+  const [email, setEmail] = useState<User | String>("")
+  const [password, setPassword] = useState<User | String>("")
   const [errorText, setErrorText] = useState<User | undefined>()
 
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      rememberMe: false
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    }
-  });
+  const handleOnSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault()
+    const payload = {username, email, password}
+    console.log(payload)
+}
   
 
   return (
     <Flex bg="gray.300" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} pr={12} pl={12} rounded="md">
-        <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={handleOnSubmit}>
           <VStack spacing={4} align="flex-start">
             <FormControl>
             <FormLabel htmlFor="text">Username</FormLabel>
@@ -44,8 +39,8 @@ export default function LoginPage() {
                 name="user"
                 type="text"
                 variant="filled"
-                // onChange={e => setUsername (e.target.value)}
-                value={formik.values.username}
+                onChange={(e) => setUsername(e.target.value)}
+                // value={username}
               />
             </FormControl>
             <FormControl>
@@ -55,8 +50,8 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.email}
+                onChange={(e) => setEmail(e.target.value)}
+                // value={email}
               />
             </FormControl>
             <FormControl>
@@ -66,22 +61,19 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.password}
+                onChange={(e) => setPassword(e.target.value)}
+                // value={password}
               />
             </FormControl>
-            <Checkbox
-              id="rememberMe"
-              name="rememberMe"
-              onChange={formik.handleChange}
-              isChecked={formik.values.rememberMe}
-              colorScheme="purple"
-            >
-              Remember me?
-            </Checkbox>
             <Button type="submit" colorScheme="purple" width="full">
               Login
             </Button>
+            <Text>
+              Not a user? {' '}
+              <Link color='teal.500' href='/register'>
+                Click here to register.
+              </Link>
+            </Text>
           </VStack>
         </form>
       </Box>
