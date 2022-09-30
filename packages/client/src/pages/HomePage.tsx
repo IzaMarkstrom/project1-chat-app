@@ -56,8 +56,9 @@ export default function HomePage() {
   return (
     <Flex bg="white" justify="center" h="100vh">
       <Container m={8}>
+      <Heading>Welcome </Heading>
+      <Feed post={post} error={error} />
         <VStack spacing={4} align="flex-start">
-          <Heading>Welcome </Heading>
           <PostInput
             newPost={newPost}
             setNewPost={setNewPost}
@@ -65,7 +66,6 @@ export default function HomePage() {
             author={author}
             setAuthor={setAuthor}
           />
-          <Feed post={post} error={error} />
         </VStack>
       </Container>
     </Flex>
