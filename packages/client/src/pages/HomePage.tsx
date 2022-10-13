@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import Post from "@project1-chat-app/shared";
 import axios from "axios";
-import {
-  Container,
-  Heading,
-  Flex,
-  VStack,
-} from "@chakra-ui/react";
+import { Container, Heading, Flex, VStack } from "@chakra-ui/react";
 import { Feed } from "../components/Feed";
 import { PostInput } from "../components/PostInput";
 
@@ -45,19 +40,22 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    fetchPosts()
-      .then(setPost)
-      .catch((error) => {
-        setPost([]);
-        setError("Something went wrong");
-      });
+    const interval = setInterval(() => {
+      fetchPosts()
+        .then(setPost)
+        .catch((error) => {
+          setPost([]);
+          setError("Something went wrong");
+        });
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <Flex bg="white" justify="center" h="100vh">
       <Container m={8}>
-      <Heading>Welcome </Heading>
-      <Feed post={post} error={error} />
+        <Heading>Welcome </Heading>
+        <Feed post={post} error={error} />
         <VStack spacing={4} align="flex-start">
           <PostInput
             newPost={newPost}
