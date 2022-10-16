@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import User from "@project1-chat-app/shared";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"
+import User from "@project1-chat-app/shared/src/user";
 import {
   Box,
   Button,
@@ -9,36 +10,41 @@ import {
   Input,
   VStack,
   Text,
-  Link
+  Link,
 } from "@chakra-ui/react";
 const axios = require('axios');
 
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState<User | String>("")
-  const [email, setEmail] = useState<User | String>("")
-  const [password, setPassword] = useState<User | String>("")
-  // const [errorText, setErrorText] = useState<User | undefined>()
+  const [username, setUsername] = useState<User | string>("")
+  const [email, setEmail] = useState<User | string>("")
+  const [password, setPassword] = useState<User | string>("")
+  const [errorText, setErrorText] = useState<string>("")
+
+  const navigate = useNavigate()
   
 
     const handleOnSubmit = async (e: { preventDefault: () => void; }) => {
       e.preventDefault()
 
-      axios.post('http://localhost:4000/register', {
+      await axios.post('http://localhost:4000/register', {
         username: username,
         password: password,
         email: email,
       })
-      .then(() => {
-        console.log("it went OK");
+      .then((data:any) => {
+        const token = data.data.token
+        localStorage.setItem("todo", token)
+        navigate("/home")
       })
-      .catch(() => {
-        console.log("Crashing");
+      .catch((e:any) => {
+        setErrorText(e.response.data)
       });
   }
 
     return (
-      <Flex bg="gray.300" align="center" justify="center" h="100vh">
+      <Flex bg="gray.300" align="center" justify="center" h="100vh" flexDir="column">
+        <Text fontSize='3xl' mb={10}>Create your account</Text>
         <Box bg="white" p={6} pr={12} pl={12} rounded="md">
           <form onSubmit={handleOnSubmit}>
             <VStack spacing={4} align="flex-start">
@@ -50,8 +56,10 @@ export default function RegisterPage() {
                   type="text"
                   variant="filled"
                   onChange={(e) => setUsername(e.target.value)}
-                  // value={username}
+                  value={username as string}
                 />
+               {errorText && <Text fontSize='15px' color='red'>{errorText}</Text>}
+
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
@@ -61,7 +69,7 @@ export default function RegisterPage() {
                   type="email"
                   variant="filled"
                   onChange={(e) => setEmail(e.target.value)}
-                  // value={email}
+                  value={email as string}
                 />
               </FormControl>
               <FormControl>
@@ -72,7 +80,7 @@ export default function RegisterPage() {
                   type="password"
                   variant="filled"
                   onChange={(e) => setPassword(e.target.value)}
-                  // value={password}
+                  value={password as string}
                 />
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
