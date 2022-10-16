@@ -1,5 +1,6 @@
-import { Box, Avatar, Flex } from "@chakra-ui/react";
+import { Box, Avatar, Flex, Text } from "@chakra-ui/react";
 import Post from "@project1-chat-app/shared";
+import moment from "moment";
 
 export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
   if (error) {
@@ -9,27 +10,35 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
       <Box width="50%" mb="10" mt="10">
         {post.map((item) => {
           return (
-            <Flex mt="5" p="1">
-              <Avatar
-                name="Anna Rylander"
-                src="https://bit.ly/broken-link"
-                size="xs"
-                bg="purple"
-              />
-              <Box
-                bg="gray.100"
-                borderRadius="md"
-                p="1"
-                w="100%"
-                ml="2"
-                fontWeight="semibold"
-                fontSize="xs"
-                color="gray.500"
-              >
-                <p>{item.text}</p>
-                <p>{item.timeStamp.toString()}</p>
-              </Box>
-            </Flex>
+            <Box>
+              <Flex mt="5" p="1" fontSize="md">
+                <Box>
+                  <Avatar
+                    name="Anna Rylander"
+                    src="https://bit.ly/broken-link"
+                    size="xs"
+                    bg="purple"
+                  />
+                </Box>
+                <Box
+                  bg="gray.100"
+                  borderRadius="md"
+                  p="1"
+                  w="100%"
+                  ml="2"
+                  fontWeight="semibold"
+                  fontSize="xs"
+                  color="gray.500"
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <p>{item.text}</p>
+                </Box>
+              </Flex>
+              <Text fontSize="xs" color="gray.400" ml="2">
+                {moment(item.timeStamp).fromNow()}
+              </Text>
+            </Box>
           );
         })}
       </Box>
