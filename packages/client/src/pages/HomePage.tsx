@@ -13,7 +13,12 @@ import { PostInput } from "../components/PostInput";
 axios.defaults.baseURL = "http://localhost:4000";
 
 const fetchPosts = async (): Promise<Post[]> => {
-  const response = await axios.get<Post[]>("/posts");
+  const token: string | null = localStorage.getItem("todo")
+  const response = await axios.get<Post[]>("/posts", {
+    headers: 
+    { "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`}
+  });
   return response.data;
 };
 

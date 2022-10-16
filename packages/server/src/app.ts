@@ -1,10 +1,13 @@
 import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
 import Post from "@project1-chat-app/shared";
-import User from "@project1-chat-app/shared";
-const { UserModel } = require("./db")
-import saveUser from "./user-service"
-import { setupMongoDb, loadAllPosts, savePost } from "./db";
+import User from "@project1-chat-app/shared/src/user";
+const { UserModel } = require("./models/user-db")
+import saveUser from "./services/user-service"
+import { loadAllPosts, savePost } from "./models/todo-db";
+import { setupMongoDb } from "./models/common";
+import { authUser, generateToken } from "./services/auth";
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv").config();
 
 const app: Application = express();
@@ -14,7 +17,7 @@ app.use(json());
 
 const port: number = parseInt(process.env.SERVER_PORT || "4000");
 
-app.get("/posts", async (req: Request, res: Response<Post[]>) => {
+app.get("/posts", authUser, async (req: Request, res: Response<Post[]>) => {
   const posts = await loadAllPosts();
   console.log("all posts", posts);
   res.send(posts);
@@ -27,20 +30,43 @@ app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
   res.send(posts);
 });
 
-app.post("/register", async (req: Request<User>, res: Response<void>) => {
-  const {username, password, email} = req.body
+app.post("/register", async (req: Request<User>, res: Response<string>) => {
+  const {username} = req.body
 
   const userExists = await UserModel.findOne({ username });
     
   if(userExists){
-      res.status(403).json()
+      res.status(409).json("User already exists.")
   } else {
     try {
-      res.send(await saveUser(req.body))
+      await saveUser(req.body)
+      const token = generateToken(req.body.username)
+      res.status(200).json(token)
     } catch (e) {
-      res.sendStatus(400)
+      res.sendStatus(400).send(`Error: ${e}`)
     }
   }
+})
+
+app.post("/login", async (req: Request<User>, res: Response<any>) => {
+  const {username, password} = req.body
+
+  const userExists = await UserModel.findOne({username})
+  if(userExists){
+    const validPassword = await bcrypt.compare(password, userExists.password)
+    if(validPassword){
+      try {
+        const token = generateToken(userExists.full_name)
+        res.status(200).json({token})
+      } catch (e) {
+        res.sendStatus(400).send(`Error: ${e}`)
+      }
+    }else {
+      res.status(403).send("Wrong password")
+    }
+  }else {
+    res.status(403).send("Wrong username")
+  }    
 })
 
 app.listen(port, async function () {
