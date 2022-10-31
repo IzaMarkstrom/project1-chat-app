@@ -30,7 +30,7 @@ export default function LoginPage() {
       password: password,
     })
     .then((data:any) => {
-      const token = data.data.token
+      const token = data.data
       localStorage.setItem("todo", token)
       navigate("/home")
     })

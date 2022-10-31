@@ -33,7 +33,7 @@ export default function RegisterPage() {
         email: email,
       })
       .then((data:any) => {
-        const token = data.data.token
+        const token = data.data
         localStorage.setItem("todo", token)
         navigate("/home")
       })
@@ -88,7 +88,7 @@ export default function RegisterPage() {
               </Button>
               <Text>
                 Already a user? {' '}
-                <Link color='teal.500' href='/login'>
+                <Link color='teal.500' href='/'>
                   Click here to login.
                 </Link>
               </Text>

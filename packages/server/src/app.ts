@@ -57,7 +57,7 @@ app.post("/login", async (req: Request<User>, res: Response<any>) => {
     if(validPassword){
       try {
         const token = generateToken(userExists.full_name)
-        res.status(200).json({token})
+        res.status(200).json(token)
       } catch (e) {
         res.sendStatus(400).send(`Error: ${e}`)
       }

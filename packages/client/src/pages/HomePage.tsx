@@ -60,6 +60,7 @@ export default function HomePage() {
     <Flex bg="white" justify="center" h="100vh">
       <Container m={8}>
         <Heading>Welcome </Heading>
+        {post && ( <>
         <Feed post={post} error={error} />
         <VStack spacing={4} align="flex-start">
           <PostInput
@@ -70,6 +71,9 @@ export default function HomePage() {
             setAuthor={setAuthor}
           />
         </VStack>
+        </>
+        )}
+
       </Container>
     </Flex>
   );
