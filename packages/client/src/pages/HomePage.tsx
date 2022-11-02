@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Post from "@project1-chat-app/shared";
+import { Post } from "@project1-chat-app/shared";
 import axios from "axios";
 import { Container, Heading, Flex, VStack } from "@chakra-ui/react";
 import { Feed } from "../components/Feed";

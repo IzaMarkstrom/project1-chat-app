@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import Post from "@project1-chat-app/shared";
+import { Post } from "@project1-chat-app/shared";
 
 const PostSchema = new Schema({
   author: String,
