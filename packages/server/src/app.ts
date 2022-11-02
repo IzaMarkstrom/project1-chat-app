@@ -1,7 +1,7 @@
 import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
-import Post from "@project1-chat-app/shared";
-import User from "@project1-chat-app/shared/src/user";
+import { Post } from "@project1-chat-app/shared";
+import { User } from "@project1-chat-app/shared";
 const { UserModel } = require("./models/user-db")
 import saveUser from "./services/user-service"
 import { loadAllPosts, savePost } from "./models/todo-db";
@@ -39,8 +39,9 @@ app.post("/register", async (req: Request<User>, res: Response<string>) => {
       res.status(409).json("User already exists.")
   } else {
     try {
-      await saveUser(req.body)
-      const token = generateToken(req.body.username)
+      const user = await saveUser(req.body)
+      const userId = user._id
+      const token = generateToken(userId)
       res.status(200).json(token)
     } catch (e) {
       res.sendStatus(400).send(`Error: ${e}`)
@@ -56,7 +57,8 @@ app.post("/login", async (req: Request<User>, res: Response<any>) => {
     const validPassword = await bcrypt.compare(password, userExists.password)
     if(validPassword){
       try {
-        const token = generateToken(userExists.full_name)
+        const userId = userExists._id
+        const token = generateToken(userId)
         res.status(200).json(token)
       } catch (e) {
         res.sendStatus(400).send(`Error: ${e}`)
