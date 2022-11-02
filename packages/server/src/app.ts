@@ -42,6 +42,7 @@ app.post("/register", async (req: Request<User>, res: Response<string>) => {
       const user = await saveUser(req.body);
       const userId = user._id;
       const token = generateToken(userId);
+      console.log("token", token);
       res.status(200).json(token);
     } catch (e) {
       res.status(400).send(`Error: ${e}`);

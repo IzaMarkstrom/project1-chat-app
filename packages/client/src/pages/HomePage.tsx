@@ -7,12 +7,14 @@ import { PostInput } from "../components/PostInput";
 
 axios.defaults.baseURL = "http://localhost:4000";
 
+const token: string | null = localStorage.getItem("jwt");
+
 const fetchPosts = async (): Promise<Post[]> => {
-  const token: string | null = localStorage.getItem("todo")
   const response = await axios.get<Post[]>("/posts", {
-    headers: 
-    { "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`}
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
   return response.data;
 };
@@ -33,7 +35,12 @@ export default function HomePage() {
 
     try {
       await axios.post("/posts", message);
-      const response = await axios.get<Post[]>("/posts");
+      const response = await axios.get<Post[]>("/posts", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPost(response.data);
       console.log(response.data);
     } catch (err) {
@@ -60,20 +67,20 @@ export default function HomePage() {
     <Flex bg="white" justify="center" h="100vh">
       <Container m={8}>
         <Heading>Welcome </Heading>
-        {post && ( <>
-        <Feed post={post} error={error} />
-        <VStack spacing={4} align="flex-start">
-          <PostInput
-            newPost={newPost}
-            setNewPost={setNewPost}
-            createPost={createPost}
-            author={author}
-            setAuthor={setAuthor}
-          />
-        </VStack>
-        </>
+        {post && (
+          <>
+            <Feed post={post} error={error} />
+            <VStack spacing={4} align="flex-start">
+              <PostInput
+                newPost={newPost}
+                setNewPost={setNewPost}
+                createPost={createPost}
+                author={author}
+                setAuthor={setAuthor}
+              />
+            </VStack>
+          </>
         )}
-
       </Container>
     </Flex>
   );

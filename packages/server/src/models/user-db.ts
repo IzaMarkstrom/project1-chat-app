@@ -5,18 +5,17 @@ const bcrypt = require("bcrypt");
 const UserSchema = new Schema({
   username: String,
   password: String,
-  email: {type: String, unique: true},
-  roles: []
+  email: { type: String, unique: true },
+  roles: [],
 });
 
 const UserModel = model<User>("User", UserSchema);
 
 export const saveNewUser = async (user: User): Promise<User> => {
   const salt = await bcrypt.genSalt();
-  user.password = await bcrypt.hash(user.password, salt)
-
+  user.password = await bcrypt.hash(user.password, salt);
   const newModel = new UserModel(user);
   return newModel.save();
 };
 
-exports.UserModel = UserModel
+exports.UserModel = UserModel;
