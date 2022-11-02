@@ -2,7 +2,7 @@
   "name": "@project1-chat-app/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "src/post-item.ts",
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc"
   },

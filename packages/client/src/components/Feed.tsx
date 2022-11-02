@@ -1,5 +1,5 @@
 import { Box, Avatar, Flex, Text } from "@chakra-ui/react";
-import Post from "@project1-chat-app/shared";
+import { Post } from "@project1-chat-app/shared";
 import moment from "moment";
 
 export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
@@ -31,6 +31,7 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
                   color="gray.500"
                   display="flex"
                   justifyContent="space-between"
+                  key={item.id}
                 >
                   <p>{item.text}</p>
                 </Box>

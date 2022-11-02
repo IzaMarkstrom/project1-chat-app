@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import User from "@project1-chat-app/shared/src/user";
+import { User } from "@project1-chat-app/shared";
 import {
   Box,
   Button,
