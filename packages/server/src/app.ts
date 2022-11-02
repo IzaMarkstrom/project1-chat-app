@@ -2,8 +2,8 @@ import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
 import Post from "@project1-chat-app/shared";
 import User from "@project1-chat-app/shared/src/user";
-const { UserModel } = require("./models/user-db")
-import saveUser from "./services/user-service"
+const { UserModel } = require("./models/user-db");
+import saveUser from "./services/user-service";
 import { loadAllPosts, savePost } from "./models/todo-db";
 import { setupMongoDb } from "./models/common";
 import { authUser, generateToken } from "./services/auth";
@@ -31,43 +31,43 @@ app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
 });
 
 app.post("/register", async (req: Request<User>, res: Response<string>) => {
-  const {username} = req.body
+  const { username } = req.body;
 
   const userExists = await UserModel.findOne({ username });
-    
-  if(userExists){
-      res.status(409).json("User already exists.")
+
+  if (userExists) {
+    res.status(409).json("User already exists.");
   } else {
     try {
-      await saveUser(req.body)
-      const token = generateToken(req.body.username)
-      res.status(200).json(token)
+      await saveUser(req.body);
+      const token = generateToken(req.body.username);
+      res.status(200).json(token);
     } catch (e) {
-      res.sendStatus(400).send(`Error: ${e}`)
+      res.status(400).send(`Error: ${e}`);
     }
   }
-})
+});
 
 app.post("/login", async (req: Request<User>, res: Response<any>) => {
-  const {username, password} = req.body
+  const { username, password } = req.body;
 
-  const userExists = await UserModel.findOne({username})
-  if(userExists){
-    const validPassword = await bcrypt.compare(password, userExists.password)
-    if(validPassword){
+  const userExists = await UserModel.findOne({ username });
+  if (userExists) {
+    const validPassword = await bcrypt.compare(password, userExists.password);
+    if (validPassword) {
       try {
-        const token = generateToken(userExists.full_name)
-        res.status(200).json(token)
+        const token = generateToken(userExists.full_name);
+        res.status(200).json(token);
       } catch (e) {
-        res.sendStatus(400).send(`Error: ${e}`)
+        res.status(400).send(`Error: ${e}`);
       }
-    }else {
-      res.status(403).send("Wrong password")
+    } else {
+      res.status(403).send("Wrong password");
     }
-  }else {
-    res.status(403).send("Wrong username")
-  }    
-})
+  } else {
+    res.status(403).send("Wrong username");
+  }
+});
 
 app.listen(port, async function () {
   await setupMongoDb("mongodb://localhost/chatt-app");
