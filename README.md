@@ -3,7 +3,7 @@
 This is chat app is built with TypeScript, React, Express and MongoDB. 
 ## Run with docker
 
-1. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/IzaMarkstrom/project1-chat-app.git
