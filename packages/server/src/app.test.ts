@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { loadAllPosts } from "./models/todo-db";
+const app = require("./app");
 
 describe("test the server", () => {
   test("testing jest", () => {
