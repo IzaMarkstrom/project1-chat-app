@@ -21,13 +21,12 @@ const port: number = parseInt(process.env.SERVER_PORT || "4000");
 
 app.get("/posts", authUser, async (req: Request, res: Response<Post[]>) => {
   const posts = await loadAllPosts();
-  console.log("all posts", posts);
   res.send(posts);
 });
 
 app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
   const post = req.body;
-  const savedPost = await savePost(post);
+  await savePost(post);
   const posts = await loadAllPosts();
   res.send(posts);
 });
@@ -44,7 +43,6 @@ app.post("/register", async (req: Request<User>, res: Response<string>) => {
       const user = await saveUser(req.body);
       const userId = user._id;
       const token = generateToken(userId);
-      console.log("token", token);
       res.status(200).json(token);
     } catch (e) {
       res.status(400).send(`Error: ${e}`);
