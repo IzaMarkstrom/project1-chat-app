@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   roles: [],
 });
 
-const UserModel = model<User>("User", UserSchema);
+export const UserModel = model<User>("User", UserSchema);
 
 export const saveNewUser = async (user: User): Promise<User> => {
   const salt = await bcrypt.genSalt();

@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
+import { User } from "@project1-chat-app/shared";
+import saveUser from "./user-service";
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+import { UserModel } from "../models/user-db";
 
 export type TokenPayload = {
   userId: string;
@@ -33,5 +36,30 @@ export const authUser = (req: JwtRequest<any>, res: Response, next: any) => {
     }
   } else {
     return res.sendStatus(401);
+  }
+};
+
+export const authRegisterController = async (
+  req: Request<User>,
+  res: Response<string>
+) => {
+  const { username } = req.body;
+
+  const userExists = await UserModel.findOne({ username });
+
+  if (userExists) {
+    res.status(409);
+    res.json("User already exists.");
+  } else {
+    try {
+      const user = await saveUser(req.body);
+      const userId = user._id;
+      const token = generateToken(userId);
+      console.log("token", token);
+      res.status(200).json(token);
+    } catch (e) {
+      res.status(400);
+      res.send(`Error: ${e}`);
+    }
   }
 };
