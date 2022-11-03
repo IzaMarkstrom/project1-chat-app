@@ -1,0 +1,19 @@
+FROM node:16-alpine
+WORKDIR /usr/src/app
+
+COPY ./package*.json ./
+COPY ./packages/server/package*.json ./packages/server/
+COPY ./packages/shared/package*.json ./packages/shared/
+
+RUN npm ci -w packages/server
+
+COPY ./packages/server ./packages/server
+COPY ./packages/shared ./packages/shared
+
+ENV TOKEN_SECRET=jifjafjslefjsfba
+
+RUN npm run build -w packages/server
+
+EXPOSE 4000
+
+CMD [ "node", "packages/server/dist/app.js" ]

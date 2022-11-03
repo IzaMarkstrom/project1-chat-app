@@ -11,7 +11,7 @@ export interface JwtRequest<T> extends Request<T> {
 }
 
 export const generateToken = (userId: string | undefined) => {
-  const token = jwt.sign({ userId: userId }, process.env.REACT_APP_TOKEN_SECRET, {
+  const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET, {
     expiresIn: "1800s",
   });
   return token;
@@ -24,7 +24,7 @@ export const authUser = (req: JwtRequest<any>, res: Response, next: any) => {
     try {
       const decoded = jwt.verify(
         token,
-        process.env.REACT_APP_TOKEN_SECRET
+        process.env.TOKEN_SECRET
       ) as TokenPayload;
       req.jwt = decoded;
       next();

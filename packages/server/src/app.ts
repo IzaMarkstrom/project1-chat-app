@@ -8,7 +8,9 @@ import { loadAllPosts, savePost } from "./models/todo-db";
 import { setupMongoDb } from "./models/common";
 import { authUser, generateToken } from "./services/auth";
 const bcrypt = require("bcrypt");
-const dotenv = require("dotenv").config();
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app: Application = express();
 
@@ -72,7 +74,10 @@ app.post("/login", async (req: Request<User>, res: Response<any>) => {
   }
 });
 
+const MONGO_URL: string =
+  process.env.MONGO_URL || "mongodb://localhost:27017/chat-app";
+
 app.listen(port, async function () {
-  await setupMongoDb("mongodb://localhost/chatt-app");
+  await setupMongoDb(MONGO_URL);
   console.log(`App is listening on port ${port} !`);
 });
