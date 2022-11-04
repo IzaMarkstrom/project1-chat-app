@@ -1,3 +1,4 @@
+import React from "react";
 import { Input, Button } from "@chakra-ui/react";
 
 export const PostInput = ({
@@ -34,7 +35,7 @@ export const PostInput = ({
         colorScheme="purple"
         size="sm"
         p={4}
-        onClick={(e) => createPost(newPost)}
+        onClick={() => createPost(newPost)}
       >
         Send
       </Button>

@@ -1,5 +1,5 @@
-import { connect } from "mongoose";
+import { connect } from 'mongoose';
 
 export const setupMongoDb = async (url: string) => {
-    await connect(url);
-  };
+  await connect(url);
+};

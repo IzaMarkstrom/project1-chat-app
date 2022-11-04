@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Post } from "@project1-chat-app/shared";
 import axios from "axios";
@@ -7,27 +8,16 @@ import { PostInput } from "../components/PostInput";
 
 axios.defaults.baseURL = "http://localhost:4000";
 
-const token: string | null = localStorage.getItem("jwt");
-
 const fetchPosts = async (): Promise<Post[]> => {
-  if(token == null) {
-    const token: string | null = localStorage.getItem("jwt");
-    const response = await axios.get<Post[]>("/posts", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } else {
-    const response = await axios.get<Post[]>("/posts", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  }};
+  const token: string | null = localStorage.getItem("jwt");
+  const response = await axios.get<Post[]>("/posts", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+  };
   
   export default function HomePage() {
     const [post, setPost] = useState<Post[]>([]);
