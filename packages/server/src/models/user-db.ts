@@ -1,6 +1,7 @@
-import { Schema, model } from "mongoose";
-import { User } from "@project1-chat-app/shared";
-const bcrypt = require("bcrypt");
+import { Schema, model } from 'mongoose';
+import { User } from '@project1-chat-app/shared';
+
+import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema({
   username: String,
@@ -9,7 +10,7 @@ const UserSchema = new Schema({
   roles: [],
 });
 
-const UserModel = model<User>("User", UserSchema);
+const UserModel = model<User>('User', UserSchema);
 
 export const saveNewUser = async (user: User): Promise<User> => {
   const salt = await bcrypt.genSalt();
@@ -18,4 +19,4 @@ export const saveNewUser = async (user: User): Promise<User> => {
   return newModel.save();
 };
 
-exports.UserModel = UserModel;
+export default UserModel;
