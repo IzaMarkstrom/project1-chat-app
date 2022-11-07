@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, Avatar, Flex, Text } from "@chakra-ui/react";
 import { Post } from "@project1-chat-app/shared";
 import moment from "moment";
@@ -9,8 +10,8 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
     return (
       <Box width="50%" mb="10" mt="10">
         {post.map((item) => {
-          return (
-            <Box>
+          return (   
+            <Box key={item.id}>
               <Flex mt="5" p="1" fontSize="md">
                 <Box>
                   <Avatar
@@ -31,7 +32,6 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
                   color="gray.500"
                   display="flex"
                   justifyContent="space-between"
-                  key={item.id}
                 >
                   <p>{item.text}</p>
                 </Box>
@@ -45,6 +45,6 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
       </Box>
     );
   } else {
-    return <div>"No posts yet"</div>;
+    return <div><p>No posts yet</p></div>;
   }
 };

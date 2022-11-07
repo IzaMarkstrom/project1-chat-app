@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "@project1-chat-app/shared";
 import saveUser from "./user-service";
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user-db";
 
 export type TokenPayload = {
@@ -14,7 +13,7 @@ export interface JwtRequest<T> extends Request<T> {
 }
 
 export const generateToken = (userId: string | undefined) => {
-  const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET, {
+  const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET as string, {
     expiresIn: "1800s",
   });
   return token;
@@ -27,7 +26,7 @@ export const authUser = (req: JwtRequest<any>, res: Response, next: any) => {
     try {
       const decoded = jwt.verify(
         token,
-        process.env.TOKEN_SECRET
+        process.env.TOKEN_SECRET as string
       ) as TokenPayload;
       req.jwt = decoded;
       next();

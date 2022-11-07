@@ -21,24 +21,23 @@ const app: Application = express();
 app.use(cors());
 app.use(json());
 
-const port: number = parseInt(process.env.SERVER_PORT || "4000");
+const port: number = parseInt(process.env.SERVER_PORT || '4000', 10);
 
-app.get("/posts", authUser, async (req: Request, res: Response<Post[]>) => {
+app.get('/posts', authUser, async (req: Request, res: Response<Post[]>) => {
   const posts = await loadAllPosts();
-  console.log("all posts", posts);
   res.send(posts);
 });
 
-app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
+app.post('/posts', async (req: Request<Post>, res: Response<Post[]>) => {
   const post = req.body;
-  const savedPost = await savePost(post);
+  await savePost(post);
   const posts = await loadAllPosts();
   res.send(posts);
 });
 
 app.post("/register", authRegisterController);
 
-app.post("/login", async (req: Request<User>, res: Response<any>) => {
+app.post('/login', async (req: Request<User>, res: Response<any>) => {
   const { username, password } = req.body;
 
   const userExists = await UserModel.findOne({ username });
@@ -47,23 +46,22 @@ app.post("/login", async (req: Request<User>, res: Response<any>) => {
     if (validPassword) {
       try {
         const userId = userExists._id;
-        const token = generateToken(userId);
+        const token = generateToken(userId as unknown as string);
         res.status(200).json(token);
       } catch (e) {
         res.status(400).send(`Error: ${e}`);
       }
     } else {
-      res.status(403).send("Wrong password");
+      res.status(403).send('Wrong password');
     }
   } else {
-    res.status(403).send("Wrong username");
+    res.status(403).send('Wrong username');
   }
 });
 
-const MONGO_URL: string =
-  process.env.MONGO_URL || "mongodb://localhost:27017/chat-app";
+const MONGO_URL: string = process.env.MONGO_URL || 'mongodb://localhost:27017/chat-app';
 
-app.listen(port, async function () {
+app.listen(port, async () => {
   await setupMongoDb(MONGO_URL);
   console.log(`App is listening on port ${port} !`);
 });

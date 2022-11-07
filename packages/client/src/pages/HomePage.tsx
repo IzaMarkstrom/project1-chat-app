@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Post } from "@project1-chat-app/shared";
 import axios from "axios";
@@ -7,9 +8,8 @@ import { PostInput } from "../components/PostInput";
 
 axios.defaults.baseURL = "http://localhost:4000";
 
-const token: string | null = localStorage.getItem("jwt");
-
 const fetchPosts = async (): Promise<Post[]> => {
+  const token: string | null = localStorage.getItem("jwt");
   const response = await axios.get<Post[]>("/posts", {
     headers: {
       "Content-Type": "application/json",
@@ -17,14 +17,14 @@ const fetchPosts = async (): Promise<Post[]> => {
     },
   });
   return response.data;
-};
-
-export default function HomePage() {
-  const [post, setPost] = useState<Post[]>([]);
-  const [error, setError] = useState<string | undefined>();
-  const [newPost, setNewPost] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-
+  };
+  
+  export default function HomePage() {
+    const [post, setPost] = useState<Post[]>([]);
+    const [error, setError] = useState<string | undefined>();
+    const [newPost, setNewPost] = useState<string>("");
+    const [author, setAuthor] = useState<string>("");
+    
   const createPost = async (newPost: string): Promise<void> => {
     const message: Post = {
       text: newPost,
@@ -32,8 +32,9 @@ export default function HomePage() {
       timeStamp: new Date(),
       id: post.length + 1,
     };
-
+    
     try {
+      const token: string | null = localStorage.getItem("jwt");
       await axios.post("/posts", message);
       const response = await axios.get<Post[]>("/posts", {
         headers: {
@@ -42,7 +43,7 @@ export default function HomePage() {
         },
       });
       setPost(response.data);
-      console.log(response.data);
+
     } catch (err) {
       setPost([]);
       setError("Something went wrong...");

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "@project1-chat-app/shared";
@@ -12,7 +13,7 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
-const axios = require("axios");
+import axios from "axios";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState<User | string>("");
