@@ -3,25 +3,19 @@ on:
   pull_request:
     branches: ["main"]
 jobs:
-  build:
+  eslint_job:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Checking out repository on GITHUB_WORKSPACE
+        uses: actions/checkout@v3
+      - name: Installing dependencies
+        run: npm install
+      - name: Running ESLint on client
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Install modules
-    #   run: yarn
-    # - name: Run ESLint
-    #   run: eslint . --ext .ts,.tsx
+          cd packages/client
+          npm run eslint
+      - name: Running ESLint on server
+        run: |
+          cd packages/server
+          npm run eslint
+      - run: echo "${{job.name}} job status ${{ job.status }}."
