@@ -57,6 +57,7 @@ export default function LoginPage() {
               <FormLabel htmlFor="text">Username</FormLabel>
               <Input
                 id="user"
+                placeholder="Username"
                 name="user"
                 type="text"
                 variant="filled"
