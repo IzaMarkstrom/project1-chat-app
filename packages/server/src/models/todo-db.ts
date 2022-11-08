@@ -24,8 +24,5 @@ export const savePost = async (
     authorId: userId,
     authorName: userName,
   });
-  console.log("post", post.text);
-  console.log("username", userName);
-  console.log("model", newModel);
   newModel.save();
 };

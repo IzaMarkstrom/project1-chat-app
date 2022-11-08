@@ -19,7 +19,7 @@ export const generateToken = (userId: string | undefined) => {
   return token;
 };
 
-export const authUser = (req: JwtRequest<any>, res: Response, next: any) => {
+export const authUser = (req: JwtRequest<unknown>, res: Response, next: any) => {
   const token: string | undefined = req.header("authorization")?.split(" ")[1];
 
   if (token) {
@@ -54,7 +54,6 @@ export const authRegisterController = async (
       const user = await saveUser(req.body);
       const userId = user._id;
       const token = generateToken(userId);
-      console.log("token", token);
       res.status(200).json(token);
     } catch (e) {
       res.status(400);
