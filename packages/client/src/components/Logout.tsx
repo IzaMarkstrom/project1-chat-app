@@ -7,7 +7,6 @@ export default function Logout() {
 
   const logout = () => {
     localStorage.clear();
-    console.log("user logged out");
     navigate("/");
   };
 

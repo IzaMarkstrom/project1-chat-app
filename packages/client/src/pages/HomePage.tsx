@@ -54,25 +54,16 @@ export default function HomePage() {
     }
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchPosts()
-  //       .then(setPost)
-  //       .catch((error) => {
-  //         setPost([]);
-  //         setError("Something went wrong");
-  //       });
-  //   }, 2000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
-    fetchPosts()
-      .then(setPost)
-      .catch((error) => {
-        setPost([]);
-        setError("Something went wrong");
-      });
+    const interval = setInterval(() => {
+      fetchPosts()
+        .then(setPost)
+        .catch((error) => {
+          setPost([]);
+          setError("Something went wrong");
+        });
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

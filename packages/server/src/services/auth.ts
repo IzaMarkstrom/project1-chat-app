@@ -13,9 +13,13 @@ export interface JwtRequest<T> extends Request<T> {
 }
 
 export const generateToken = (userId: string | undefined) => {
-  const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET as string, {
-    expiresIn: "1800s",
-  });
+  const token = jwt.sign(
+    { userId: userId },
+    process.env.TOKEN_SECRET as string,
+    {
+      expiresIn: "1800s",
+    }
+  );
   return token;
 };
 
@@ -54,7 +58,6 @@ export const authRegisterController = async (
       const user = await saveUser(req.body);
       const userId = user._id;
       const token = generateToken(userId);
-      console.log("token", token);
       res.status(200).json(token);
     } catch (e) {
       res.status(400);

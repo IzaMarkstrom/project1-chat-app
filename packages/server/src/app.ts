@@ -35,7 +35,6 @@ app.post(
   async (req: JwtRequest<Post>, res: Response<Post[]>) => {
     const post = req.body;
     const userId = req.jwt?.userId;
-    console.log(userId);
     const userName = await getUserById(userId);
 
     await savePost(post, userId as string, userName?.username as string);
