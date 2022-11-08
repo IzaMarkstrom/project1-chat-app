@@ -1,7 +1,6 @@
 import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
-import { Post } from "@project1-chat-app/shared";
-import { User } from "@project1-chat-app/shared";
+import { Post, User } from "@project1-chat-app/shared";
 import { UserModel } from "./models/user-db";
 import { loadAllPosts, savePost } from "./models/todo-db";
 import { setupMongoDb } from "./models/common";
@@ -35,7 +34,6 @@ app.post(
   async (req: JwtRequest<Post>, res: Response<Post[]>) => {
     const post = req.body;
     const userId = req.jwt?.userId;
-    console.log(userId);
     const userName = await getUserById(userId);
 
     await savePost(post, userId as string, userName?.username as string);
@@ -46,7 +44,7 @@ app.post(
 
 app.post("/register", authRegisterController);
 
-app.post("/login", async (req: Request<User>, res: Response<any>) => {
+app.post("/login", async (req: Request<User>, res: Response<unknown>) => {
   const { username, password } = req.body;
 
   const userExists = await UserModel.findOne({ username }).select("+password");
@@ -71,7 +69,7 @@ app.post("/login", async (req: Request<User>, res: Response<any>) => {
 app.get(
   "/getuser",
   authUser,
-  async (req: JwtRequest<User>, res: Response<any>) => {
+  async (req: JwtRequest<User>, res: Response<unknown>) => {
     const userId = req.jwt?.userId;
     try {
       const user = await getUserById(userId);
