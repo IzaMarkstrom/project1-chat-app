@@ -1,7 +1,6 @@
 export interface Post {
   id: number;
-  author: string;
+  authorName: string;
   text: string;
   timeStamp: Date;
 }
-

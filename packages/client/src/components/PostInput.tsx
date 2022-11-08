@@ -5,14 +5,10 @@ export const PostInput = ({
   newPost,
   setNewPost,
   createPost,
-  author,
-  setAuthor,
 }: {
   newPost: string;
   setNewPost: (text: string) => void;
   createPost: (text: string) => void;
-  author: string;
-  setAuthor: (text: string) => void;
 }) => {
   return (
     <>
@@ -22,13 +18,6 @@ export const PostInput = ({
         type="text"
         value={newPost}
         onChange={(e) => setNewPost(e.target.value)}
-      />
-      <Input
-        bg="gray.100"
-        placeholder="Your name please"
-        type="text"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
       />
       <Button
         type="submit"

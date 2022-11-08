@@ -10,12 +10,12 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
     return (
       <Box width="50%" mb="10" mt="10">
         {post.map((item) => {
-          return (   
+          return (
             <Box key={item.id}>
               <Flex mt="5" p="1" fontSize="md">
                 <Box>
                   <Avatar
-                    name="Anna Rylander"
+                    name={item.authorName}
                     src="https://bit.ly/broken-link"
                     size="xs"
                     bg="purple"
@@ -45,6 +45,10 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
       </Box>
     );
   } else {
-    return <div><p>No posts yet</p></div>;
+    return (
+      <div>
+        <p>No posts yet</p>
+      </div>
+    );
   }
 };

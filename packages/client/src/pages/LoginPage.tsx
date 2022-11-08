@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "@project1-chat-app/shared";
@@ -49,7 +49,7 @@ export default function LoginPage() {
       flexDir="column"
     >
       <Text fontSize="3xl" mb={10}>
-        Login to see your todos!
+        Login to see all messages!
       </Text>
       <Box bg="white" p={6} pr={12} pl={12} rounded="md">
         <form onSubmit={handleOnSubmit}>
@@ -58,7 +58,6 @@ export default function LoginPage() {
               <FormLabel htmlFor="text">Username</FormLabel>
               <Input
                 id="user"
-                placeholder="Username"
                 name="user"
                 type="text"
                 variant="filled"
