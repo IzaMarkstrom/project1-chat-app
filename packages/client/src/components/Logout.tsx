@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
-import UserContext from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
