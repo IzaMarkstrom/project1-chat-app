@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "@project1-chat-app/shared";

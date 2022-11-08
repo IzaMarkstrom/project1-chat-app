@@ -76,8 +76,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <Flex bg="white" justify="center" h="100vh">
-      <Logout />
+    <Flex bg="white" direction="column" h="100vh" alignItems="center">
       <Container m={8}>
         {post && (
           <>
@@ -91,6 +90,9 @@ export default function HomePage() {
             </VStack>
           </>
         )}
+      </Container>
+      <Container>
+        <Logout />
       </Container>
     </Flex>
   );
