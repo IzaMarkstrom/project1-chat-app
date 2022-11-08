@@ -35,7 +35,7 @@ export default function RegisterPage() {
       .then((data: any) => {
         const token = data.data;
         localStorage.setItem("jwt", token);
-        console.log(token);
+
         navigate("/home");
       })
       .catch((e: any) => {

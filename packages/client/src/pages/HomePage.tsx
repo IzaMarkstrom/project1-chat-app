@@ -2,9 +2,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Post } from "@project1-chat-app/shared";
 import axios from "axios";
-import { Container, Heading, Flex, VStack } from "@chakra-ui/react";
+import { Container, Flex, VStack } from "@chakra-ui/react";
 import { Feed } from "../components/Feed";
 import { PostInput } from "../components/PostInput";
+import Logout from "../components/Logout";
 
 axios.defaults.baseURL = "http://localhost:4000";
 
@@ -17,25 +18,27 @@ const fetchPosts = async (): Promise<Post[]> => {
     },
   });
   return response.data;
-  };
-  
-  export default function HomePage() {
-    const [post, setPost] = useState<Post[]>([]);
-    const [error, setError] = useState<string | undefined>();
-    const [newPost, setNewPost] = useState<string>("");
-    const [author, setAuthor] = useState<string>("");
-    
+};
+
+export default function HomePage() {
+  const [post, setPost] = useState<Post[]>([]);
+  const [error, setError] = useState<string | undefined>();
+  const [newPost, setNewPost] = useState<string>("");
+
   const createPost = async (newPost: string): Promise<void> => {
-    const message: Post = {
+    const message = {
       text: newPost,
-      author: author,
       timeStamp: new Date(),
-      id: post.length + 1,
     };
-    
+
     try {
       const token: string | null = localStorage.getItem("jwt");
-      await axios.post("/posts", message);
+      await axios.post("/posts", message, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const response = await axios.get<Post[]>("/posts", {
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +46,6 @@ const fetchPosts = async (): Promise<Post[]> => {
         },
       });
       setPost(response.data);
-
     } catch (err) {
       setPost([]);
       setError("Something went wrong...");
@@ -52,22 +54,31 @@ const fetchPosts = async (): Promise<Post[]> => {
     }
   };
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchPosts()
+  //       .then(setPost)
+  //       .catch((error) => {
+  //         setPost([]);
+  //         setError("Something went wrong");
+  //       });
+  //   }, 2000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchPosts()
-        .then(setPost)
-        .catch((error) => {
-          setPost([]);
-          setError("Something went wrong");
-        });
-    }, 2000);
-    return () => clearInterval(interval);
+    fetchPosts()
+      .then(setPost)
+      .catch((error) => {
+        setPost([]);
+        setError("Something went wrong");
+      });
   }, []);
 
   return (
     <Flex bg="white" justify="center" h="100vh">
+      <Logout />
       <Container m={8}>
-        <Heading>Welcome </Heading>
         {post && (
           <>
             <Feed post={post} error={error} />
@@ -76,8 +87,6 @@ const fetchPosts = async (): Promise<Post[]> => {
                 newPost={newPost}
                 setNewPost={setNewPost}
                 createPost={createPost}
-                author={author}
-                setAuthor={setAuthor}
               />
             </VStack>
           </>
