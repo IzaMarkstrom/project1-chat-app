@@ -29,19 +29,27 @@ app.get("/posts", authUser, async (req: Request, res: Response<Post[]>) => {
   res.send(posts);
 });
 
-app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
-  const post = req.body;
-  await savePost(post);
-  const posts = await loadAllPosts();
-  res.send(posts);
-});
+app.post(
+  "/posts",
+  authUser,
+  async (req: JwtRequest<Post>, res: Response<Post[]>) => {
+    const post = req.body;
+    const userId = req.jwt?.userId;
+    console.log(userId);
+    const userName = await getUserById(userId);
+
+    await savePost(post, userId as string, userName?.username as string);
+    const posts = await loadAllPosts();
+    res.send(posts);
+  }
+);
 
 app.post("/register", authRegisterController);
 
 app.post("/login", async (req: Request<User>, res: Response<any>) => {
   const { username, password } = req.body;
 
-  const userExists = await UserModel.findOne({ username });
+  const userExists = await UserModel.findOne({ username }).select("+password");
   if (userExists) {
     const validPassword = await bcrypt.compare(password, userExists.password);
     if (validPassword) {
@@ -65,7 +73,6 @@ app.get(
   authUser,
   async (req: JwtRequest<User>, res: Response<any>) => {
     const userId = req.jwt?.userId;
-    console.log(userId);
     try {
       const user = await getUserById(userId);
       if (userId) {
@@ -84,6 +91,3 @@ app.listen(port, async () => {
   await setupMongoDb(MONGO_URL);
   console.log(`App is listening on port ${port} !`);
 });
-function getUser(id: any) {
-  throw new Error("Function not implemented.");
-}

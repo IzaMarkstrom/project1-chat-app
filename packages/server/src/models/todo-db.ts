@@ -2,7 +2,8 @@ import { Schema, model } from "mongoose";
 import { Post } from "@project1-chat-app/shared";
 
 const PostSchema = new Schema({
-  author: { type: Schema.Types.ObjectId, ref: "User" },
+  authorId: { type: Schema.Types.ObjectId, ref: "User" },
+  authorName: String,
   text: String,
   timeStamp: Date,
 });
@@ -13,7 +14,18 @@ export const loadAllPosts = async (): Promise<Post[]> => {
   return PostModel.find({}).exec();
 };
 
-export const savePost = async (post: Post): Promise<void> => {
-  const newModel = new PostModel(post);
+export const savePost = async (
+  post: Post,
+  userId: string,
+  userName: string
+): Promise<void> => {
+  const newModel = new PostModel({
+    text: post.text,
+    authorId: userId,
+    authorName: userName,
+  });
+  console.log("post", post.text);
+  console.log("username", userName);
+  console.log("model", newModel);
   newModel.save();
 };
