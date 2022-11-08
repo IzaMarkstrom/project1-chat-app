@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { Post } from "@project1-chat-app/shared";
 
 const PostSchema = new Schema({
-  author: String,
+  author: { type: Schema.Types.ObjectId, ref: "User" },
   text: String,
   timeStamp: Date,
 });

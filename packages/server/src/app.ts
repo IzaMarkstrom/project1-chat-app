@@ -2,17 +2,18 @@ import express, { Application, json, Request, Response } from "express";
 import cors from "cors";
 import { Post } from "@project1-chat-app/shared";
 import { User } from "@project1-chat-app/shared";
-const { UserModel } = require("./models/user-db");
-import saveUser from "./services/user-service";
+import { UserModel } from "./models/user-db";
 import { loadAllPosts, savePost } from "./models/todo-db";
 import { setupMongoDb } from "./models/common";
 import {
   authRegisterController,
   authUser,
   generateToken,
+  JwtRequest,
 } from "./services/auth";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { getUserById } from "./services/user-service";
 
 dotenv.config();
 
@@ -21,14 +22,14 @@ const app: Application = express();
 app.use(cors());
 app.use(json());
 
-const port: number = parseInt(process.env.SERVER_PORT || '4000', 10);
+const port: number = parseInt(process.env.SERVER_PORT || "4000", 10);
 
-app.get('/posts', authUser, async (req: Request, res: Response<Post[]>) => {
+app.get("/posts", authUser, async (req: Request, res: Response<Post[]>) => {
   const posts = await loadAllPosts();
   res.send(posts);
 });
 
-app.post('/posts', async (req: Request<Post>, res: Response<Post[]>) => {
+app.post("/posts", async (req: Request<Post>, res: Response<Post[]>) => {
   const post = req.body;
   await savePost(post);
   const posts = await loadAllPosts();
@@ -37,7 +38,7 @@ app.post('/posts', async (req: Request<Post>, res: Response<Post[]>) => {
 
 app.post("/register", authRegisterController);
 
-app.post('/login', async (req: Request<User>, res: Response<any>) => {
+app.post("/login", async (req: Request<User>, res: Response<any>) => {
   const { username, password } = req.body;
 
   const userExists = await UserModel.findOne({ username });
@@ -52,16 +53,37 @@ app.post('/login', async (req: Request<User>, res: Response<any>) => {
         res.status(400).send(`Error: ${e}`);
       }
     } else {
-      res.status(403).send('Wrong password');
+      res.status(403).send("Wrong password");
     }
   } else {
-    res.status(403).send('Wrong username');
+    res.status(403).send("Wrong username");
   }
 });
 
-const MONGO_URL: string = process.env.MONGO_URL || 'mongodb://localhost:27017/chat-app';
+app.get(
+  "/getuser",
+  authUser,
+  async (req: JwtRequest<User>, res: Response<any>) => {
+    const userId = req.jwt?.userId;
+    console.log(userId);
+    try {
+      const user = await getUserById(userId);
+      if (userId) {
+        res.status(200).send(user);
+      }
+    } catch (error) {
+      res.status(403).send(error);
+    }
+  }
+);
+
+const MONGO_URL: string =
+  process.env.MONGO_URL || "mongodb://localhost:27017/chat-app";
 
 app.listen(port, async () => {
   await setupMongoDb(MONGO_URL);
   console.log(`App is listening on port ${port} !`);
 });
+function getUser(id: any) {
+  throw new Error("Function not implemented.");
+}

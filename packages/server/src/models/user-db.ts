@@ -1,11 +1,11 @@
-import { Schema, model } from 'mongoose';
-import { User } from '@project1-chat-app/shared';
+import { Schema, model } from "mongoose";
+import { User } from "@project1-chat-app/shared";
 
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 const UserSchema = new Schema({
   username: String,
-  password: String,
+  password: { type: String, select: false },
   email: { type: String, unique: true },
   roles: [],
 });
@@ -17,6 +17,12 @@ export const saveNewUser = async (user: User): Promise<User> => {
   user.password = await bcrypt.hash(user.password, salt);
   const newModel = new UserModel(user);
   return newModel.save();
+};
+
+export const getUser = async (
+  userId: string | undefined
+): Promise<User | null> => {
+  return UserModel.findById(userId).select("-password").exec();
 };
 
 export default UserModel;
