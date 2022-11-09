@@ -21,6 +21,7 @@ export const savePost = async (
 ): Promise<void> => {
   const newModel = new PostModel({
     text: post.text,
+    timeStamp: post.timeStamp,
     authorId: userId,
     authorName: userName,
   });
