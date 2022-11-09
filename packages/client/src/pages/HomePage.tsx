@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Post } from "@project1-chat-app/shared";
 import axios from "axios";
 import { Container, Flex, VStack } from "@chakra-ui/react";

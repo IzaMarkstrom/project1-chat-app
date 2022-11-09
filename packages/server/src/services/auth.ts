@@ -23,7 +23,7 @@ export const generateToken = (userId: string | undefined) => {
   return token;
 };
 
-export const authUser = (req: JwtRequest<any>, res: Response, next: any) => {
+export const authUser = (req: JwtRequest<unknown>, res: Response, next: any) => {
   const token: string | undefined = req.header("authorization")?.split(" ")[1];
 
   if (token) {
