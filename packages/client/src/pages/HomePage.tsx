@@ -27,7 +27,7 @@ export default function HomePage() {
   const createPost = async (newPost: string): Promise<void> => {
     const message = {
       text: newPost,
-      timeStamp: new Date(),
+      timeStamp: Date.now(),
     };
 
     try {

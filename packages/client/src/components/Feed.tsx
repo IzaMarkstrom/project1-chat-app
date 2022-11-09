@@ -38,7 +38,7 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
                 </Box>
               </Flex>
               <Text fontSize="xs" color="gray.400" ml="2">
-                {moment(item.timeStamp).fromNow()}
+                {moment(item.timeStamp).calendar()}
               </Text>
             </Box>
           );
