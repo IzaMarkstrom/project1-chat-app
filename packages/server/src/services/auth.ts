@@ -13,9 +13,13 @@ export interface JwtRequest<T> extends Request<T> {
 }
 
 export const generateToken = (userId: string | undefined) => {
-  const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET as string, {
-    expiresIn: "1800s",
-  });
+  const token = jwt.sign(
+    { userId: userId },
+    process.env.TOKEN_SECRET as string,
+    {
+      expiresIn: "1800s",
+    }
+  );
   return token;
 };
 

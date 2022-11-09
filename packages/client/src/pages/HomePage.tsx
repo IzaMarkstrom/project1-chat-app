@@ -53,30 +53,20 @@ export default function HomePage() {
     }
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchPosts()
-  //       .then(setPost)
-  //       .catch((error) => {
-  //         setPost([]);
-  //         setError("Something went wrong");
-  //       });
-  //   }, 2000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
-    fetchPosts()
-      .then(setPost)
-      .catch((error) => {
-        setPost([]);
-        setError("Something went wrong");
-      });
+    const interval = setInterval(() => {
+      fetchPosts()
+        .then(setPost)
+        .catch((error) => {
+          setPost([]);
+          setError("Something went wrong");
+        });
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <Flex bg="white" justify="center" h="100vh">
-      <Logout />
+    <Flex bg="white" direction="column" h="100vh" alignItems="center">
       <Container m={8}>
         {post && (
           <>
@@ -90,6 +80,9 @@ export default function HomePage() {
             </VStack>
           </>
         )}
+      </Container>
+      <Container>
+        <Logout />
       </Container>
     </Flex>
   );

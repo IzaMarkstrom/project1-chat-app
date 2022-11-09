@@ -19,6 +19,7 @@ export const Feed = ({ post, error }: { post: Post[]; error?: string }) => {
                     src="https://bit.ly/broken-link"
                     size="xs"
                     bg="purple"
+                    color="#fff"
                   />
                 </Box>
                 <Box

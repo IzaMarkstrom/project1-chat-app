@@ -7,15 +7,14 @@ export default function Logout() {
 
   const logout = () => {
     localStorage.clear();
-    console.log("user logged out");
     navigate("/");
   };
 
   return (
-    <div className="logout">
-      <Button onClick={logout} colorScheme="purple">
+    <>
+      <Button onClick={logout} colorScheme="purple" size="sm">
         Logout
       </Button>
-    </div>
+    </>
   );
 }
